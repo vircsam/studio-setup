@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, height=720">
+  <title>Edited Video with Motion Frames</title>
+  <!-- GSAP Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background: #090d16;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .stage {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      transform-origin: 0 0;
+    }
+    .video-stage {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      z-index: 1;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&display=swap');
+    
+    .handwriting-wrapper {
+      position: absolute;
+      width: 1200px;
+      height: 240px;
+      pointer-events: none;
+    }
+    .flourish-path {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      opacity: 0.85;
+    }
+    .handwritten-text {
+      letter-spacing: 2px;
+      will-change: stroke-dashoffset, fill;
+    }
+
+
+        /* Glassmorphic Lower-Third Card */
+        .motion-lower-third {
+          position: absolute;
+          left: 80px;
+          bottom: 60px;
+          width: 650px;
+          background: rgba(15, 23, 42, 0.85);
+          border: 1px solid rgba(56, 189, 248, 0.35);
+          backdrop-filter: blur(16px);
+          border-radius: 20px;
+          padding: 26px 32px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          z-index: 10;
+        }
+        .lower-icon {
+          width: 54px;
+          height: 54px;
+          border-radius: 12px;
+          background: rgba(56, 189, 248, 0.2);
+          color: #38bdf8;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 26px;
+          flex-shrink: 0;
+        }
+        .lower-title {
+          font-size: 22px;
+          font-weight: 700;
+          color: #ffffff;
+          margin-bottom: 4px;
+        }
+        .lower-sub {
+          font-size: 14px;
+          color: #94a3b8;
+          line-height: 1.4;
+        }
+
+        /* Top-Right Badge */
+        .live-badge {
+          position: absolute;
+          right: 60px;
+          top: 60px;
+          background: rgba(16, 185, 129, 0.2);
+          border: 1px solid rgba(16, 185, 129, 0.4);
+          color: #34d399;
+          font-family: monospace;
+          font-weight: 700;
+          font-size: 14px;
+          padding: 8px 16px;
+          border-radius: 999px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          z-index: 10;
+        }
+        .pulse-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #34d399;
+          box-shadow: 0 0 10px #34d399;
+        }
+    
+
+    .camera-rig-container {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      overflow: hidden;
+    }
+    .camera-rig-inner {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="video_edit_demo"
+       class="stage"
+       data-composition-id="video_edit_demo"
+       data-start="0"
+       data-duration="4.5"
+       data-width="1280"
+       data-height="720">
+    
+    
+    <!-- Base Video Track 0 -->
+    <div id="base-video-track" class="video-stage" data-track-index="0" data-start="0" data-duration="4.5">
+      <video id="base-video" src="assets/test.mp4" playsinline muted style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter: contrast(1.05) brightness(0.95);"></video>
+    </div>
+
+    <div id="video-cam" class="camera-rig-container"><div id="video-cam-inner" class="camera-rig-inner">
+    
+        <!-- Top Right Badge -->
+        <div id="vid-badge" class="live-badge">
+          <span class="pulse-dot"></span> HYPERFRAMES OVERLAY
+        </div>
+
+        <!-- Handwriting Callout -->
+        
+    <div id="vid-callout-wrap" class="handwriting-wrapper" style="left:100px; top:120px;">
+      <svg class="handwriting-svg" viewBox="0 0 1200 240" width="1200" height="240">
+        <!-- Underline flourishing stroke -->
+        <path id="vid-callout-flourish" class="flourish-path"
+              d="M 10 180 Q 250 160 500 175 T 950 165"
+              fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Handwritten typography -->
+        <text id="vid-callout-txt" class="handwritten-text"
+              x="20" y="140"
+              font-family="'Caveat', 'Dancing Script', cursive"
+              font-size="54"
+              fill="none"
+              stroke="#38bdf8"
+              stroke-width="3.5"
+              stroke-dasharray="1400"
+              stroke-dashoffset="1400">
+          Dynamic Motion Frame
+        </text>
+      </svg>
+    </div>
+
+
+        <!-- Lower Third Explainer Card -->
+        <div id="vid-card" class="motion-lower-third">
+          <div class="lower-icon">🎬</div>
+          <div>
+            <div class="lower-title">Raw Footage + Programmatic Motion</div>
+            <div class="lower-sub">Frame-accurate deterministic timeline with zero drift.</div>
+          </div>
+        </div>
+    
+    </div></div>
+    
+  </div>
+
+  <script>
+    // HyperFrames deterministic timeline
+    const tl = gsap.timeline({ paused: true });
+    
+    // Animate composition
+    
+        // Badge entry
+        tl.from('#vid-badge', { opacity: 0, scale: 0.8, duration: 0.5, ease: 'back.out(2)' }, 0.2);
+        
+        // Lower Third card slide-in
+        tl.from('#vid-card', {
+          opacity: 0,
+          y: 40,
+          scale: 0.95,
+          duration: 0.7,
+          ease: 'power3.out'
+        }, 0.8);
+    
+    
+    // Tegaki handwriting stroke reveal
+    tl.to('#vid-callout-txt', {
+      strokeDashoffset: 0,
+      duration: 1.8,
+      ease: 'power1.inOut'
+    }, 0.5);
+    
+    // Smooth ink fill transition
+    tl.to('#vid-callout-txt', {
+      fill: '#38bdf8',
+      duration: 0.63,
+      ease: 'power2.out'
+    }, 1.76);
+
+    // Flourish underline accent
+    tl.to('#vid-callout-flourish', {
+      strokeDashoffset: 0,
+      duration: 0.9,
+      ease: 'power2.out'
+    }, 1.2200000000000002);
+
+tl.to('#video-cam-inner', { scale: 1.15, ease: 'power2.out', duration: 2.0 }, 0.4);
+    
+    
+    // Deterministic Video Frame Seeking Synchronization
+    const baseVid = document.getElementById('base-video');
+    if (baseVid) {
+      tl.eventCallback('onUpdate', function() {
+        if (baseVid.readyState >= 1) {
+          const t = tl.time();
+          if (Math.abs(baseVid.currentTime - t) > 0.04) {
+            baseVid.currentTime = t;
+          }
+        }
+      });
+    }
+
+
+    // Register timeline with HyperFrames renderer hook
+    window.__timelines = window.__timelines || {};
+    window.__timelines['video_edit_demo'] = tl;
+    window.__hyperframes_ready = true;
+  </script>
+</body>
+</html>

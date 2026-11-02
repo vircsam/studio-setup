@@ -60,6 +60,19 @@ class Composition:
         self.timeline_actions: List[str] = []
         self.camera_rig: Optional[Any] = None
         self.soundtrack: Optional[Any] = None
+        self.video_source: Optional[str] = None
+        self.video_opacity: float = 1.0
+        self.video_filter: str = ""
+
+    def add_video_background(self, video_path: str, opacity: float = 1.0, filter: str = "") -> "Composition":
+        """
+        Adds base video footage as track 0.
+        All motion cards, typography, handwriting, and camera rigs animate on top!
+        """
+        self.video_source = video_path
+        self.video_opacity = opacity
+        self.video_filter = filter
+        return self
 
     def add_scene(self, scene: Scene) -> "Composition":
         self.scenes.append(scene)
@@ -126,6 +139,32 @@ class Composition:
             sound_html = self.soundtrack.render_audio_tags()
             combined_gsap += "\n" + self.soundtrack.render_gsap()
 
+        # Base Video Track if present
+        video_html = ""
+        video_sync_js = ""
+        if self.video_source:
+            filter_style = f"filter: {self.video_filter};" if self.video_filter else ""
+            video_html = f"""
+    <!-- Base Video Track 0 -->
+    <div id="base-video-track" class="video-stage" data-track-index="0" data-start="0" data-duration="{self.duration}">
+      <video id="base-video" src="{self.video_source}" playsinline muted style="width:100%;height:100%;object-fit:cover;opacity:{self.video_opacity};{filter_style}"></video>
+    </div>
+"""
+            video_sync_js = """
+    // Deterministic Video Frame Seeking Synchronization
+    const baseVid = document.getElementById('base-video');
+    if (baseVid) {
+      tl.eventCallback('onUpdate', function() {
+        if (baseVid.readyState >= 1) {
+          const t = tl.time();
+          if (Math.abs(baseVid.currentTime - t) > 0.04) {
+            baseVid.currentTime = t;
+          }
+        }
+      });
+    }
+"""
+
         html = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -154,11 +193,19 @@ class Composition:
       overflow: hidden;
       transform-origin: 0 0;
     }}
+    .video-stage {{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }}
     .scene {{
       position: absolute;
       inset: 0;
       width: {self.width}px;
       height: {self.height}px;
+      z-index: 1;
     }}
     {combined_styles}
   </style>
@@ -172,6 +219,7 @@ class Composition:
        data-width="{self.width}"
        data-height="{self.height}">
     
+    {video_html}
     {camera_rig_html_open}
     {combined_body}
     {camera_rig_html_close}
@@ -185,6 +233,8 @@ class Composition:
     // Animate composition
     {combined_gsap}
     
+    {video_sync_js}
+
     // Register timeline with HyperFrames renderer hook
     window.__timelines = window.__timelines || {{}};
     window.__timelines['{self.comp_id}'] = tl;
@@ -199,8 +249,27 @@ class Composition:
         out = Path(output_dir)
         out.mkdir(parents=True, exist_ok=True)
         
+        # Handle local video assets
+        if self.video_source:
+            src_path = Path(self.video_source)
+            if src_path.exists():
+                assets_dir = out / "assets"
+                assets_dir.mkdir(parents=True, exist_ok=True)
+                dest = assets_dir / src_path.name
+                if not dest.exists():
+                    import shutil
+                    shutil.copy2(src_path, dest)
+                original_src = self.video_source
+                self.video_source = f"assets/{src_path.name}"
+                html_text = self.compile_html()
+                self.video_source = original_src
+            else:
+                html_text = self.compile_html()
+        else:
+            html_text = self.compile_html()
+
         index_file = out / "index.html"
-        index_file.write_text(self.compile_html(), encoding="utf-8")
+        index_file.write_text(html_text, encoding="utf-8")
         
         hf_config = {
             "$schema": "https://hyperframes.heygen.com/schema/hyperframes.json",
