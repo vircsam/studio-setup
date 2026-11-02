@@ -188,7 +188,7 @@ class HyperFramesStudioHandler(SimpleHTTPRequestHandler):
                     "npx", "hyperframes", "render",
                     str(LIVE_PREVIEW_DIR),
                     "-o", str(target_mp4),
-                    "--quality", "medium"
+                    "--quality", "standard"
                 ]
                 env = os.environ.copy()
                 env["CI"] = "1"

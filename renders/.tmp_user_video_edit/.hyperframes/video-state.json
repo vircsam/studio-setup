@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "historyId": "02af7b96-775d-42a9-9b7d-18c8a2562aef",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "assets/test.mp4": {
+      "hash": "4b64c0a1d4f305f9d81ff07697c81374c89b203643df7b5bba1017e36bc2e4ea",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/02af7b96-775d-42a9-9b7d-18c8a2562aef/blobs/4b/4b64c0a1d4f305f9d81ff07697c81374c89b203643df7b5bba1017e36bc2e4ea"
+    },
+    "hyperframes.json": {
+      "hash": "00a39e832d3515ada3ee73d6e453e3acd033777b30a68881468a0299ee08a71e",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/02af7b96-775d-42a9-9b7d-18c8a2562aef/blobs/00/00a39e832d3515ada3ee73d6e453e3acd033777b30a68881468a0299ee08a71e"
+    },
+    "index.html": {
+      "hash": "b0f9115b0006f5e670d1b5f3c733763960b9d3cbbce160252fb6671947fd7351",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/02af7b96-775d-42a9-9b7d-18c8a2562aef/blobs/b0/b0f9115b0006f5e670d1b5f3c733763960b9d3cbbce160252fb6671947fd7351"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "36f9ca67-8160-4526-bc14-cf8fb8c8c634",
+      "completedAt": 1793595339914,
+      "output": "/Users/meerthikasr/Desktop/hyper-frame/renders/my_quick_edit.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, height=720">
+  <title>Edited: test</title>
+  <!-- GSAP Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background: #090d16;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .stage {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      transform-origin: 0 0;
+    }
+    .video-stage {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      z-index: 1;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&display=swap');
+    
+    .handwriting-wrapper {
+      position: absolute;
+      width: 1200px;
+      height: 240px;
+      pointer-events: none;
+    }
+    .flourish-path {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      opacity: 0.85;
+    }
+    .handwritten-text {
+      letter-spacing: 2px;
+      will-change: stroke-dashoffset, fill;
+    }
+
+
+            .explainer-card {
+              position: absolute;
+              left: 80px;
+              bottom: 60px;
+              background: rgba(15, 23, 42, 0.90);
+              border: 1px solid rgba(56, 189, 248, 0.4);
+              backdrop-filter: blur(20px);
+              border-radius: 20px;
+              padding: 24px 32px;
+              color: #ffffff;
+              box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+              z-index: 10;
+              max-width: 600px;
+            }
+            .card-tag { font-family: monospace; font-size: 13px; color: #38bdf8; font-weight: 700; margin-bottom: 6px; }
+            .card-h { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+            .card-p { font-size: 15px; color: #94a3b8; line-height: 1.4; margin: 0; }
+        
+
+    .camera-rig-container {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      overflow: hidden;
+    }
+    .camera-rig-inner {
+      position: absolute;
+      inset: 0;
+      width: 1280px;
+      height: 720px;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="user_video_edit"
+       class="stage"
+       data-composition-id="user_video_edit"
+       data-start="0"
+       data-duration="2.0"
+       data-width="1280"
+       data-height="720">
+    
+    
+    <!-- Base Video Track 0 -->
+    <div id="base-video-track" class="video-stage" data-track-index="0" data-start="0" data-duration="2.0">
+      <video id="base-video" src="assets/test.mp4" playsinline muted style="width:100%;height:100%;object-fit:cover;opacity:0.92;filter: contrast(1.04);"></video>
+    </div>
+
+    <div id="cam" class="camera-rig-container"><div id="cam-inner" class="camera-rig-inner">
+    
+    <div id="hw-callout-wrap" class="handwriting-wrapper" style="left:80px; top:100px;">
+      <svg class="handwriting-svg" viewBox="0 0 1200 240" width="1200" height="240">
+        <!-- Underline flourishing stroke -->
+        <path id="hw-callout-flourish" class="flourish-path"
+              d="M 10 180 Q 250 160 500 175 T 950 165"
+              fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Handwritten typography -->
+        <text id="hw-callout-txt" class="handwritten-text"
+              x="20" y="140"
+              font-family="'Caveat', 'Dancing Script', cursive"
+              font-size="52"
+              fill="none"
+              stroke="#38bdf8"
+              stroke-width="3.5"
+              stroke-dasharray="1400"
+              stroke-dashoffset="1400">
+          Amazing Video
+        </text>
+      </svg>
+    </div>
+
+
+            <div id="explainer-card" class="explainer-card">
+              <div class="card-tag">HYPERFRAMES // MOTION FRAME</div>
+              <div class="card-h">Key Takeaway</div>
+              <div class="card-p">AI-assisted video editing with deterministic motion</div>
+            </div>
+        
+    </div></div>
+    
+  </div>
+
+  <script>
+    // HyperFrames deterministic timeline
+    const tl = gsap.timeline({ paused: true });
+    
+    // Animate composition
+    
+    // Tegaki handwriting stroke reveal
+    tl.to('#hw-callout-txt', {
+      strokeDashoffset: 0,
+      duration: 2.0,
+      ease: 'power1.inOut'
+    }, 0.5);
+    
+    // Smooth ink fill transition
+    tl.to('#hw-callout-txt', {
+      fill: '#38bdf8',
+      duration: 0.7,
+      ease: 'power2.out'
+    }, 1.9);
+
+    // Flourish underline accent
+    tl.to('#hw-callout-flourish', {
+      strokeDashoffset: 0,
+      duration: 1.0,
+      ease: 'power2.out'
+    }, 1.3);
+
+    tl.from('#explainer-card', { opacity: 0, y: 50, duration: 0.8, ease: 'back.out(1.5)' }, 0.8);
+tl.to('#cam-inner', { scale: 1.15, ease: 'power2.out', duration: 2.0 }, 0.4);
+    
+    
+    // Deterministic Video Frame Seeking Synchronization
+    const baseVid = document.getElementById('base-video');
+    if (baseVid) {
+      tl.eventCallback('onUpdate', function() {
+        if (baseVid.readyState >= 1) {
+          const t = tl.time();
+          if (Math.abs(baseVid.currentTime - t) > 0.04) {
+            baseVid.currentTime = t;
+          }
+        }
+      });
+    }
+
+
+    // Register timeline with HyperFrames renderer hook
+    window.__timelines = window.__timelines || {};
+    window.__timelines['user_video_edit'] = tl;
+    window.__hyperframes_ready = true;
+  </script>
+</body>
+</html>

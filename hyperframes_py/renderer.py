@@ -13,7 +13,7 @@ from .composition import Composition
 def render_to_mp4(
     composition: Composition,
     output_path: str = "renders/output.mp4",
-    quality: str = "medium",
+    quality: str = "standard",
     fps: Optional[int] = None,
     work_dir: Optional[str] = None
 ) -> Dict[str, Any]:

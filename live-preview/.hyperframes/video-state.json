@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "historyId": "a1a4c0c5-e662-44b1-a481-7161ac095fa4",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "hyperframes.json": {
+      "hash": "b1b81d4b90dadd15f42f5cb3e21472dfdb96af6f45edca51e8f091e133b1caf1",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/a1a4c0c5-e662-44b1-a481-7161ac095fa4/blobs/b1/b1b81d4b90dadd15f42f5cb3e21472dfdb96af6f45edca51e8f091e133b1caf1"
+    },
+    "index.html": {
+      "hash": "6b9464a012c8442316f1ff5f60cd79efb8b90d6081cc2ce1e0702ea8b69c4e27",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/a1a4c0c5-e662-44b1-a481-7161ac095fa4/blobs/6b/6b9464a012c8442316f1ff5f60cd79efb8b90d6081cc2ce1e0702ea8b69c4e27"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  }
+}
