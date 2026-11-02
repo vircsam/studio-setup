@@ -1,0 +1,175 @@
+{
+  "version": "1.0.0",
+  "extensions": [
+    {
+      "id": "reelforge",
+      "index": "01",
+      "name": "gongnyang/reelforge",
+      "title": "ReelForge Motion Fragments",
+      "description": "Render-tested motion fragments, multi-hook layout generator, and autonomous scene builder for coding agents.",
+      "category": "Motion Pipeline",
+      "tags": ["typographic choreography", "multi-hook", "render-tested", "agent-native"],
+      "repo_path": "extensions/reelforge",
+      "github_url": "https://github.com/gongnyang/reelforge",
+      "example_script": "examples/01_reelforge_motion.py",
+      "highlights": [
+        "Verified frame-by-frame layout stability",
+        "Deterministic multi-hook variant testing",
+        "Automated audio ducking & subtitle timing manifests"
+      ]
+    },
+    {
+      "id": "tegaki",
+      "index": "02",
+      "name": "gkurt/tegaki",
+      "title": "Tegaki Handwriting Animation",
+      "description": "Authentic vector handwriting and cursive text drawing extracted directly from real font glyphs.",
+      "category": "Typography & Handwriting",
+      "tags": ["handwriting", "real fonts", "svg strokes", "dashoffset"],
+      "repo_path": "extensions/tegaki",
+      "github_url": "https://github.com/gkurt/tegaki",
+      "example_script": "examples/02_tegaki_handwriting.py",
+      "highlights": [
+        "Extracts stroke orders and directions from font glyphs",
+        "No manual path authoring required",
+        "Smooth GSAP dashoffset ink-drawing reveals"
+      ]
+    },
+    {
+      "id": "animated-diagrams-skill",
+      "index": "03",
+      "name": "omkamal/animated-diagrams-skill",
+      "title": "Animated Diagrams That Draw Themselves",
+      "description": "Self-drawing architecture diagrams, interactive node networks, and dynamic data-flow pipelines.",
+      "category": "Diagrams & Infographics",
+      "tags": ["flowcharts", "architecture", "svg connectors", "camera framing"],
+      "repo_path": "extensions/animated-diagrams-skill",
+      "github_url": "https://github.com/omkamal/animated-diagrams-skill",
+      "example_script": "examples/03_animated_diagram.py",
+      "highlights": [
+        "Nodes animate with spring physics and back-eases",
+        "SVG bezier curve connectors draw themselves automatically",
+        "Pulsing data packet particles flowing along paths"
+      ]
+    },
+    {
+      "id": "design-engineering",
+      "index": "04",
+      "name": "AgentsORG/design-engineering",
+      "title": "Sound Derived From Motion",
+      "description": "Procedural sound design mapped directly from visual velocity, element mass, and screen coordinates.",
+      "category": "Audio & Sound Design",
+      "tags": ["sound-from-motion", "sound-sheet", "spatial audio", "web audio"],
+      "repo_path": "extensions/design-engineering",
+      "github_url": "https://github.com/AgentsORG/design-engineering",
+      "example_script": "examples/04_design_engineering_sound.py",
+      "highlights": [
+        "Element size maps to pitch (large = thud, small = crisp click)",
+        "Horizontal position maps to stereo pan (-1.0 to +1.0)",
+        "Zero-drift synchronization with contact frames"
+      ]
+    },
+    {
+      "id": "huashu-design",
+      "index": "05",
+      "name": "alchaincyf/huashu-design",
+      "title": "Huashu Seek-Safe 3D Camera Rig",
+      "description": "Cinematic camera choreography governed by logarithmic duration formulas and viewer comfort budgets.",
+      "category": "Camera & Viewport",
+      "tags": ["camera rig", "push-in", "pull-out", "3d orbit", "parallax"],
+      "repo_path": "extensions/huashu-design",
+      "github_url": "https://github.com/alchaincyf/huashu-design",
+      "example_script": "examples/05_huashu_camera_rig.py",
+      "highlights": [
+        "Logarithmic duration scaling based on motion delta",
+        "Comfort budget prevents nauseating rapid zooms",
+        "Perspective 3D orbit and parallax depth layers"
+      ]
+    },
+    {
+      "id": "hyperframes-student-kit",
+      "index": "06",
+      "name": "nateherkai/hyperframes-student-kit",
+      "title": "Student Kit Card Templates",
+      "description": "Motion cards, talking-head shorts, transcript-driven dead air cutting, and pacing optimization.",
+      "category": "Shorts & Talking Head",
+      "tags": ["vertical 9:16", "glass popout", "silence cutting", "explainer cards"],
+      "repo_path": "extensions/hyperframes-student-kit",
+      "github_url": "https://github.com/nateherkai/hyperframes-student-kit",
+      "example_script": "examples/06_student_kit_card.py",
+      "highlights": [
+        "Over 400 motion-graphics card templates",
+        "Optimized 9:16 vertical short format",
+        "Transcript-aligned speech timing"
+      ]
+    },
+    {
+      "id": "hyperframes-motion-library",
+      "index": "07",
+      "name": "nutllwhy/hyperframes-motion-library",
+      "title": "Motion Library (23 Templates)",
+      "description": "23 production-ready motion templates from growing bar charts to number counters and explainers.",
+      "category": "Templates & Charts",
+      "tags": ["bar-chart-grow", "number-counter", "data visualization", "catalog"],
+      "repo_path": "extensions/hyperframes-motion-library",
+      "github_url": "https://github.com/nutllwhy/hyperframes-motion-library",
+      "example_script": "examples/07_motion_charts.py",
+      "highlights": [
+        "Parametric data inputs without editing code",
+        "Elastic chart growth animations",
+        "Live value count-up with currency/percent badges"
+      ]
+    },
+    {
+      "id": "saas-motion-kit",
+      "index": "08",
+      "name": "tugrawork-creator/saas-motion-kit",
+      "title": "SaaS Motion Kit (Six Styles)",
+      "description": "Bento, Minimal, Kinetic, Elegant, Neo-brutalist, and Playful styles with built-in variety audits.",
+      "category": "SaaS Promos",
+      "tags": ["bento grid", "six styles", "variety audit", "software trailer"],
+      "repo_path": "extensions/saas-motion-kit",
+      "github_url": "https://github.com/tugrawork-creator/saas-motion-kit",
+      "example_script": "examples/08_saas_showcase.py",
+      "highlights": [
+        "6 distinct design philosophies",
+        "Variety audit rules preventing cookie-cutter videos",
+        "Bento glass cards with dynamic borders"
+      ]
+    },
+    {
+      "id": "product-launch-motion",
+      "index": "09",
+      "name": "AbubakrChan/product-launch-motion",
+      "title": "Product Launch Motion",
+      "description": "Continuous motion choreography, realistic cursor pathing, film grain, and click cue checks.",
+      "category": "Launch Trailers",
+      "tags": ["cursor animation", "film grain", "continuous motion", "springs"],
+      "repo_path": "extensions/product-launch-motion",
+      "github_url": "https://github.com/AbubakrChan/product-launch-motion",
+      "example_script": "examples/09_product_launch_reel.py",
+      "highlights": [
+        "Cursor waypoints with reactive click ripples",
+        "Continuous motion flow ('one shape that never cuts')",
+        "Subtle analog film grain texture"
+      ]
+    },
+    {
+      "id": "plugins",
+      "index": "10",
+      "name": "openai/plugins",
+      "title": "HeyGen Official Codex Skills",
+      "description": "Official agent skills connecting OpenAI Codex, Claude Code, and HyperFrames for autonomous video generation.",
+      "category": "AI Agent Skills",
+      "tags": ["codex", "heygen", "claude-code", "agent skills"],
+      "repo_path": "extensions/plugins/plugins/hyperframes",
+      "github_url": "https://github.com/openai/plugins",
+      "example_script": "examples/10_codex_heygen_skill.py",
+      "highlights": [
+        "HeyGen's canonical prompt specifications",
+        "Deterministic frame verification hooks",
+        "Direct CLI and Cloud render integration"
+      ]
+    }
+  ]
+}

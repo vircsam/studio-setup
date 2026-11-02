@@ -1,0 +1,19 @@
+{
+  "name": "hyper-frame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "studio": "python3 server.py 8080",
+    "preview": "hyperframes preview",
+    "render": "hyperframes render",
+    "test-py": "python3 examples/07_motion_charts.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "hyperframes": "^0.8.231"
+  }
+}

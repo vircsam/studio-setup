@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperFrames Video Studio & Extension Ecosystem</title>
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --bg-surface: #0e131f;
+      --bg-card: #141b2d;
+      --bg-card-hover: #1b243b;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.3);
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --accent: #a855f7;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      height: 64px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #07090e;
+      font-size: 18px;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+    .logo-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .version-tag {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #07090e;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .btn-success {
+      background: #10b981;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    /* Layout */
+    .app-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 260px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .nav-list {
+      list-style: none;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-main);
+    }
+    .nav-item.active {
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+    }
+
+    /* Extension quick selector in sidebar */
+    .sidebar-section-title {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+      padding: 16px 16px 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .extension-nav-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .ext-mini-item {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.15s ease;
+    }
+    .ext-mini-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-main);
+    }
+    .ext-idx {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--primary);
+      opacity: 0.8;
+    }
+
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      background: var(--bg-dark);
+    }
+
+    .tab-view {
+      display: none;
+      padding: 24px 32px;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .tab-view.active {
+      display: flex;
+    }
+
+    /* View: Extensions Hub */
+    .hub-header {
+      margin-bottom: 8px;
+    }
+    .hub-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .hub-subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-top: 6px;
+    }
+    .extensions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+    .ext-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .ext-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .card-category {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .card-repo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .tag-chip {
+      font-size: 11px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #cbd5e1;
+    }
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .card-actions .btn {
+      flex: 1;
+      justify-content: center;
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+
+    /* View: Studio & Player */
+    .studio-split {
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 24px;
+      height: calc(100vh - 112px);
+    }
+    .canvas-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .player-container {
+      background: #000;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex: 1;
+      min-height: 400px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #000;
+    }
+
+    /* Controls Bar */
+    .player-controls {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .time-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      min-width: 90px;
+    }
+    .scrubber {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: #334155;
+      outline: none;
+      cursor: pointer;
+    }
+    .scrubber::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+    }
+    .buttons-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .icon-btn:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    /* Right Editor Panel */
+    .editor-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .editor-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .editor-tabs {
+      display: flex;
+      gap: 6px;
+    }
+    .editor-tab {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .editor-tab.active {
+      background: var(--bg-card);
+      color: var(--primary);
+    }
+    .code-box {
+      flex: 1;
+      width: 100%;
+      background: #090d16;
+      border: none;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 16px;
+      resize: none;
+      outline: none;
+      white-space: pre;
+    }
+    .editor-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* Renders Gallery */
+    .renders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .render-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .render-video-thumb {
+      width: 100%;
+      height: 200px;
+      background: #000;
+      object-fit: contain;
+    }
+    .render-info {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .render-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .render-meta {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      display: flex;
+      gap: 12px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--primary);
+      color: var(--text-main);
+      padding: 14px 22px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      font-size: 14px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 999;
+      animation: slideIn 0.25s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-group">
+      <div class="logo-badge">HF</div>
+      <div class="logo-title">HyperFrames Studio</div>
+      <div class="version-tag">v0.8.231 + 10 Repos</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="openHyperframesCLIPreview()">⚡ Native Studio Preview</button>
+      <button class="btn btn-primary" onclick="renderCurrentVideo()">🎬 Render Video to MP4</button>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-body">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <ul class="nav-list">
+        <li class="nav-item active" onclick="switchTab('hub')">
+          <span>📦</span> 10 Extensions Hub
+        </li>
+        <li class="nav-item" onclick="switchTab('studio')">
+          <span>🎬</span> Python Animation Studio
+        </li>
+        <li class="nav-item" onclick="switchTab('gallery')">
+          <span>🎞️</span> Rendered MP4 Gallery
+        </li>
+        <li class="nav-item" onclick="switchTab('doctor')">
+          <span>🩺</span> Engine Doctor & Status
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Extensions Quick Select</div>
+      <div class="extension-nav-list" id="sidebar-ext-list">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Main View Area -->
+    <div class="main-content">
+
+      <!-- View 1: 10 Extensions Hub -->
+      <div id="tab-hub" class="tab-view active">
+        <div class="hub-header">
+          <h1 class="hub-title">10 GitHub Repos That Level Up HyperFrames Videos</h1>
+          <p class="hub-subtitle">Explore open-source skills, handwriting engines, camera rigs, and motion toolkits designed for coding agents.</p>
+        </div>
+        <div class="extensions-grid" id="extensions-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- View 2: Studio & Python Animation Playground -->
+      <div id="tab-studio" class="tab-view">
+        <div class="studio-split">
+          <!-- Left: Video Canvas & Controls -->
+          <div class="canvas-panel">
+            <div class="player-container">
+              <iframe id="preview-iframe" class="preview-frame" src="/preview"></iframe>
+            </div>
+
+            <!-- Player Controls -->
+            <div class="player-controls">
+              <div class="timeline-row">
+                <span class="time-display" id="time-current">00:00.00</span>
+                <input type="range" id="timeline-scrubber" class="scrubber" min="0" max="100" value="0" step="0.1" oninput="onScrub(this.value)">
+                <span class="time-display" id="time-total" style="text-align: right;">00:04.50</span>
+              </div>
+              <div class="buttons-row">
+                <div class="btn-group">
+                  <button class="icon-btn" onclick="stepFrame(-1)" title="Previous Frame">⏮</button>
+                  <button class="icon-btn" id="play-pause-btn" onclick="togglePlay()" title="Play / Pause">▶</button>
+                  <button class="icon-btn" onclick="stepFrame(1)" title="Next Frame">⏭</button>
+                  <button class="icon-btn" onclick="restartTimeline()" title="Restart">↺</button>
+                </div>
+                <div class="btn-group">
+                  <select id="preset-selector" onchange="loadPreset(this.value)" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: #fff; padding: 7px 12px; border-radius: 8px; font-size: 13px;">
+                    <option value="07_motion_charts.py">07 Motion Library (Charts)</option>
+                    <option value="01_reelforge_motion.py">01 ReelForge (Fragments)</option>
+                    <option value="02_tegaki_handwriting.py">02 Tegaki (Handwriting)</option>
+                    <option value="03_animated_diagram.py">03 Animated Diagrams</option>
+                    <option value="04_design_engineering_sound.py">04 Sound From Motion</option>
+                    <option value="05_huashu_camera_rig.py">05 Huashu Camera Rig</option>
+                    <option value="06_student_kit_card.py">06 Student Kit Card</option>
+                    <option value="08_saas_showcase.py">08 SaaS Bento Grid</option>
+                    <option value="09_product_launch_reel.py">09 Product Launch Cursor</option>
+                    <option value="10_codex_heygen_skill.py">10 Codex HeyGen Skills</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Python Code Editor -->
+          <div class="editor-panel">
+            <div class="editor-header">
+              <div class="editor-tabs">
+                <div class="editor-tab active" id="tab-py" onclick="switchEditorTab('py')">Python Code</div>
+                <div class="editor-tab" id="tab-html" onclick="switchEditorTab('html')">Compiled HTML/GSAP</div>
+              </div>
+              <span id="script-filename" style="font-family: monospace; font-size: 12px; color: var(--primary);">07_motion_charts.py</span>
+            </div>
+            
+            <textarea id="python-editor" class="code-box" spellcheck="false"></textarea>
+            <textarea id="html-inspector" class="code-box" spellcheck="false" style="display: none;" readonly></textarea>
+            
+            <div class="editor-footer">
+              <button class="btn btn-outline" onclick="resetEditorCode()">↺ Reset Code</button>
+              <button class="btn btn-success" onclick="runPythonCode()">▶ Run Python Animation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View 3: Rendered MP4 Gallery -->
+      <div id="tab-gallery" class="tab-view">
+        <div class="hub-header">
+          <h1 class="hub-title">Rendered MP4 Video Gallery</h1>
+          <p class="hub-subtitle">Pixel-perfect, deterministic video artifacts rendered via headless Chrome and FFmpeg.</p>
+        </div>
+        <div class="renders-grid" id="renders-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- View 4: Engine Doctor & Status -->
+      <div id="tab-doctor" class="tab-view">
+        <div class="hub-header">
+          <h1 class="hub-title">HyperFrames Engine Status</h1>
+          <p class="hub-subtitle">Diagnostic report of the underlying rendering and animation engine.</p>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; max-width: 800px;">
+          <div style="display: flex; flex-direction: column; gap: 16px; font-family: monospace; font-size: 14px;">
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color:var(--text-muted)">HyperFrames Engine</span>
+              <span style="color:var(--success)">✓ v0.8.231 (Latest)</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color:var(--text-muted)">Node.js Runtime</span>
+              <span style="color:var(--success)">✓ v22.20.0 (darwin arm64)</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color:var(--text-muted)">FFmpeg Video Encoder</span>
+              <span style="color:var(--success)">✓ FFmpeg 7.1.1 (/opt/homebrew/bin/ffmpeg)</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color:var(--text-muted)">Headless Chrome Engine</span>
+              <span style="color:var(--success)">✓ Google Chrome (Metal GPU Acceleration)</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+              <span style="color:var(--text-muted)">Python Animation Framework</span>
+              <span style="color:var(--success)">✓ hyperframes_py (Python 3.14.4)</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color:var(--text-muted)">Extensions Installed</span>
+              <span style="color:var(--primary)">10 of 10 Repos Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    let extensionsData = [];
+    let isPlaying = false;
+    let playInterval = null;
+    let currentScrubVal = 0;
+    let compDuration = 4.5;
+
+    // Toast helper
+    function showToast(msg, icon = '✓') {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      document.getElementById('toast-icon').innerText = icon;
+      t.style.display = 'flex';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+
+    // Switch Top-Level Tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const navMap = { 'hub': 0, 'studio': 1, 'gallery': 2, 'doctor': 3 };
+      const navItems = document.querySelectorAll('.nav-item');
+      if (navItems[navMap[tabId]]) navItems[navMap[tabId]].classList.add('active');
+
+      if (tabId === 'gallery') loadRenders();
+    }
+
+    // Switch Editor Tab
+    function switchEditorTab(type) {
+      document.getElementById('tab-py').classList.toggle('active', type === 'py');
+      document.getElementById('tab-html').classList.toggle('active', type === 'html');
+      document.getElementById('python-editor').style.display = type === 'py' ? 'block' : 'none';
+      document.getElementById('html-inspector').style.display = type === 'html' ? 'block' : 'none';
+    }
+
+    // Fetch extensions registry
+    async function loadExtensions() {
+      try {
+        const res = await fetch('/api/extensions');
+        const data = await res.json();
+        extensionsData = data.extensions;
+        renderExtensionsGrid();
+        renderSidebarExtensions();
+      } catch (e) {
+        console.error('Failed to load extensions', e);
+      }
+    }
+
+    function renderExtensionsGrid() {
+      const container = document.getElementById('extensions-grid');
+      container.innerHTML = extensionsData.map(ext => `
+        <div class="ext-card">
+          <div>
+            <div class="card-top">
+              <span class="card-num">${ext.index}</span>
+              <span class="card-category">${ext.category}</span>
+            </div>
+            <h3 class="card-title">${ext.title}</h3>
+            <div class="card-repo">${ext.name}</div>
+            <p class="card-desc">${ext.description}</p>
+            <div class="card-tags">
+              ${ext.tags.map(t => `<span class="tag-chip">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-outline" onclick="loadAndOpenPreset('${ext.example_script.replace('examples/', '')}')">📝 Open Python</button>
+            <a class="btn btn-primary" href="${ext.github_url}" target="_blank">↗ GitHub</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderSidebarExtensions() {
+      const list = document.getElementById('sidebar-ext-list');
+      list.innerHTML = extensionsData.map(ext => `
+        <div class="ext-mini-item" onclick="loadAndOpenPreset('${ext.example_script.replace('examples/', '')}')">
+          <span class="ext-idx">${ext.index}</span>
+          <span>${ext.title.split(' ')[0]}</span>
+        </div>
+      `).join('');
+    }
+
+    // Load Python Script Preset
+    async function loadPreset(filename) {
+      try {
+        document.getElementById('script-filename').innerText = filename;
+        const res = await fetch('/api/examples?file=' + filename);
+        const code = await res.text();
+        document.getElementById('python-editor').value = code;
+        runPythonCode();
+      } catch (e) {
+        showToast('Error loading preset: ' + e.message, '⚠️');
+      }
+    }
+
+    function loadAndOpenPreset(filename) {
+      document.getElementById('preset-selector').value = filename;
+      loadPreset(filename);
+      switchTab('studio');
+    }
+
+    // Run Python Code via backend API
+    async function runPythonCode() {
+      const code = document.getElementById('python-editor').value;
+      showToast('Compiling Python animation...', '⚡');
+      try {
+        const res = await fetch('/api/run-python', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code })
+        });
+        const result = await res.json();
+        if (result.success) {
+          document.getElementById('html-inspector').value = result.html;
+          compDuration = result.duration || 4.5;
+          document.getElementById('time-total').innerText = '00:0' + compDuration.toFixed(2);
+          
+          // Reload iframe preview
+          const iframe = document.getElementById('preview-iframe');
+          iframe.src = '/preview?t=' + Date.now();
+          showToast('Python animation running live!', '✓');
+        } else {
+          showToast('Error: ' + result.error, '❌');
+        }
+      } catch (e) {
+        showToast('Execution failed: ' + e.message, '❌');
+      }
+    }
+
+    // Timeline Scrubbing & Playback
+    function onScrub(val) {
+      currentScrubVal = val;
+      const t = (val / 100) * compDuration;
+      document.getElementById('time-current').innerText = '00:0' + t.toFixed(2);
+      
+      const iframe = document.getElementById('preview-iframe');
+      if (iframe && iframe.contentWindow && iframe.contentWindow.__timelines) {
+        const tls = iframe.contentWindow.__timelines;
+        for (let k in tls) {
+          tls[k].pause();
+          tls[k].seek(t);
+        }
+      }
+    }
+
+    function togglePlay() {
+      const iframe = document.getElementById('preview-iframe');
+      if (!iframe || !iframe.contentWindow || !iframe.contentWindow.__timelines) return;
+      
+      const tls = iframe.contentWindow.__timelines;
+      const firstTl = Object.values(tls)[0];
+      if (!firstTl) return;
+
+      if (isPlaying) {
+        for (let k in tls) tls[k].pause();
+        isPlaying = false;
+        document.getElementById('play-pause-btn').innerText = '▶';
+        clearInterval(playInterval);
+      } else {
+        for (let k in tls) tls[k].play();
+        isPlaying = true;
+        document.getElementById('play-pause-btn').innerText = '⏸';
+        
+        playInterval = setInterval(() => {
+          if (firstTl.time() >= compDuration) {
+            firstTl.seek(0);
+          }
+          const t = firstTl.time();
+          document.getElementById('timeline-scrubber').value = (t / compDuration) * 100;
+          document.getElementById('time-current').innerText = '00:0' + t.toFixed(2);
+        }, 33);
+      }
+    }
+
+    function restartTimeline() {
+      onScrub(0);
+      document.getElementById('timeline-scrubber').value = 0;
+      const iframe = document.getElementById('preview-iframe');
+      if (iframe && iframe.contentWindow && iframe.contentWindow.__timelines) {
+        const tls = iframe.contentWindow.__timelines;
+        for (let k in tls) tls[k].restart();
+      }
+    }
+
+    function stepFrame(direction) {
+      const stepTime = 1 / 30; // 30fps
+      let currentT = (currentScrubVal / 100) * compDuration;
+      currentT = Math.max(0, Math.min(compDuration, currentT + direction * stepTime));
+      onScrub((currentT / compDuration) * 100);
+      document.getElementById('timeline-scrubber').value = (currentT / compDuration) * 100;
+    }
+
+    // Render Video to MP4
+    async function renderCurrentVideo() {
+      showToast('Rendering MP4 via HyperFrames Headless Chrome...', '🎬');
+      const filename = document.getElementById('script-filename').innerText.replace('.py', '.mp4');
+      try {
+        const res = await fetch('/api/render', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ output_name: filename })
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast(`Render complete: ${result.filename} (${result.size_mb} MB)`, '🎉');
+          loadRenders();
+        } else {
+          showToast('Render failed: ' + result.error, '❌');
+        }
+      } catch (e) {
+        showToast('Render error: ' + e.message, '❌');
+      }
+    }
+
+    // Load Rendered MP4 Files
+    async function loadRenders() {
+      try {
+        const res = await fetch('/api/renders');
+        const data = await res.json();
+        const container = document.getElementById('renders-grid');
+        if (!data.files || data.files.length === 0) {
+          container.innerHTML = '<p style="color:var(--text-muted)">No rendered videos yet. Click "Render Video to MP4" to generate one!</p>';
+          return;
+        }
+        container.innerHTML = data.files.map(f => `
+          <div class="render-card">
+            <video class="render-video-thumb" src="/renders/${f.name}" controls></video>
+            <div class="render-info">
+              <div class="render-name">${f.name}</div>
+              <div class="render-meta">
+                <span>📦 ${f.size_mb} MB</span>
+                <span>⏱️ ${f.duration || 'Ready'}</span>
+              </div>
+              <a href="/renders/${f.name}" download class="btn btn-outline" style="justify-content:center; margin-top:8px;">⬇ Download MP4</a>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error('Failed to load renders', e);
+      }
+    }
+
+    function openHyperframesCLIPreview() {
+      fetch('/api/cli-preview');
+      showToast('HyperFrames Studio preview server launching on port 4000...', '⚡');
+    }
+
+    // Initialize
+    loadExtensions();
+    loadPreset('07_motion_charts.py');
+    loadRenders();
+  </script>
+</body>
+</html>

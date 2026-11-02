@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920, height=1080">
+  <title>Product Launch Trailer</title>
+  <!-- GSAP Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0a0a0c;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      transform-origin: 0 0;
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    
+    .pro-cursor {
+      position: absolute;
+      left: 100px;
+      top: 100px;
+      z-index: 9999;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    }
+    .cursor-ripple {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      transform: scale(0);
+      opacity: 0;
+    }
+
+
+        .pl-wrapper {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        .pl-eyebrow {
+          font-family: monospace;
+          color: #38bdf8;
+          font-size: 22px;
+          letter-spacing: 4px;
+          margin-bottom: 20px;
+        }
+        .pl-headline {
+          font-size: 88px;
+          font-weight: 900;
+          letter-spacing: -0.04em;
+          color: #ffffff;
+          margin: 0 0 24px 0;
+          line-height: 1.05;
+        }
+        .pl-headline span {
+          background: linear-gradient(135deg, #38bdf8, #818cf8);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .pl-cta-btn {
+          margin-top: 40px;
+          background: #ffffff;
+          color: #090d16;
+          font-size: 24px;
+          font-weight: 700;
+          padding: 22px 56px;
+          border-radius: 999px;
+          box-shadow: 0 10px 40px rgba(56, 189, 248, 0.4);
+          cursor: pointer;
+          transform-origin: 50% 50%;
+        }
+        /* Film grain overlay */
+        .film-grain {
+          position: absolute;
+          inset: 0;
+          opacity: 0.05;
+          pointer-events: none;
+          background-image: radial-gradient(#fff 1px, transparent 1px);
+          background-size: 4px 4px;
+        }
+    
+  </style>
+</head>
+<body>
+  <div id="product_launch_demo"
+       class="stage"
+       data-composition-id="product_launch_demo"
+       data-start="0"
+       data-duration="5.0"
+       data-width="1920"
+       data-height="1080">
+    
+    
+    
+        <div class="film-grain"></div>
+        <div class="pl-wrapper">
+          <div id="pl-eye" class="pl-eyebrow">PRODUCT LAUNCH MOTION / CONTINUOUS FLOW</div>
+          <h1 id="pl-h1" class="pl-headline">Turn Code Into <span>Cinematic Motion</span></h1>
+          <div id="pl-btn" class="pl-cta-btn">Start Creating Now →</div>
+        </div>
+        
+    <div id="hero-cursor" class="pro-cursor">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M5.65376 12.3673H5.46026L5.31717 12.4976L0.500002 16.8829L0.500002 1.19841L11.7841 12.3673H5.65376Z" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
+      </svg>
+      <div id="hero-cursor-click-ripple" class="cursor-ripple"></div>
+    </div>
+
+    
+    
+    
+  </div>
+
+  <script>
+    // HyperFrames deterministic timeline
+    const tl = gsap.timeline({ paused: true });
+    
+    // Animate composition
+    
+        tl.from('#pl-eye', { opacity: 0, y: -20, duration: 0.6, ease: 'power2.out' }, 0.2);
+        tl.from('#pl-h1', { opacity: 0, y: 40, duration: 0.9, ease: 'power3.out' }, 0.4);
+        tl.from('#pl-btn', { opacity: 0, scale: 0.8, duration: 0.6, ease: 'back.out(2)' }, 0.8);
+        
+        // Button press reactive effect on cursor click at 2.6s
+        tl.to('#pl-btn', { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.in' }, 2.6);
+        tl.to('#pl-btn', { boxShadow: '0 0 60px rgba(56, 189, 248, 0.8)', duration: 0.3, yoyo: true, repeat: 1 }, 2.6);
+    
+    
+    tl.to('#hero-cursor', {
+      x: 600,
+      y: 450,
+      duration: 1.2,
+      ease: 'power2.inOut'
+    }, 0.5);
+
+
+    tl.to('#hero-cursor', {
+      x: 960,
+      y: 560,
+      duration: 0.8,
+      ease: 'power2.inOut'
+    }, 1.8);
+
+
+    // Cursor click action
+    tl.to('#hero-cursor', { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.in' }, 2.6);
+    tl.to('#hero-cursor-click-ripple', { opacity: 1, scale: 1.8, duration: 0.45, ease: 'power2.out' }, 2.6);
+    tl.to('#hero-cursor-click-ripple', { opacity: 0, duration: 0.2 }, 2.9);
+
+
+    tl.to('#hero-cursor', {
+      x: 1300,
+      y: 620,
+      duration: 1.0,
+      ease: 'power2.inOut'
+    }, 3.0);
+
+    
+    // Register timeline with HyperFrames renderer hook
+    window.__timelines = window.__timelines || {};
+    window.__timelines['product_launch_demo'] = tl;
+    window.__hyperframes_ready = true;
+  </script>
+</body>
+</html>

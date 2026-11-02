@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "historyId": "7aab5357-b739-4daf-96c7-81b3afaeae7c",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "hyperframes.json": {
+      "hash": "b1b81d4b90dadd15f42f5cb3e21472dfdb96af6f45edca51e8f091e133b1caf1",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/7aab5357-b739-4daf-96c7-81b3afaeae7c/blobs/b1/b1b81d4b90dadd15f42f5cb3e21472dfdb96af6f45edca51e8f091e133b1caf1"
+    },
+    "index.html": {
+      "hash": "b9ca471c34f2343512dc464ad7d78acf9888d860ad5ad42c3603770214d522f6",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/7aab5357-b739-4daf-96c7-81b3afaeae7c/blobs/b9/b9ca471c34f2343512dc464ad7d78acf9888d860ad5ad42c3603770214d522f6"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "dad28494-47de-4f97-9bca-3486a5950661",
+      "completedAt": 1793594496707,
+      "output": "/Users/meerthikasr/Desktop/hyper-frame/renders/02_tegaki_handwriting.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}

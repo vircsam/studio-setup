@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920, height=1080">
+  <title>Motion Library Data Visualization</title>
+  <!-- GSAP Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0a0f1d;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      transform-origin: 0 0;
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    
+    .chart-wrapper {
+      position: absolute;
+      left: 160px;
+      top: 140px;
+      width: 1600px;
+      height: 780px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 24px;
+      padding: 60px 80px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-header {
+      margin-bottom: 40px;
+    }
+    .chart-title {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px 0;
+      color: #f8fafc;
+    }
+    .chart-subtitle {
+      font-size: 22px;
+      color: #94a3b8;
+      margin: 0;
+    }
+    .chart-canvas {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 20px;
+    }
+    .chart-col {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .col-bar-track {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .col-bar-fill {
+      width: 80px;
+      height: 0%;
+      border-radius: 12px 12px 0 0;
+      position: relative;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    }
+    .bar-val-badge {
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: 700;
+      color: #f8fafc;
+      white-space: nowrap;
+      opacity: 0;
+    }
+    .col-label {
+      margin-top: 18px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="chart_demo"
+       class="stage"
+       data-composition-id="chart_demo"
+       data-start="0"
+       data-duration="4.5"
+       data-width="1920"
+       data-height="1080">
+    
+    
+    
+    <div id="revenue-chart" class="chart-wrapper">
+      <div class="chart-header">
+        <h2 class="chart-title">Annual Recurring Revenue (ARR)</h2>
+        <p class="chart-subtitle">Live Animated Bar Chart Growth Template</p>
+      </div>
+      <div class="chart-canvas">
+        
+        <div class="chart-col">
+          <div class="col-bar-track">
+            <div id="bar-fill-0" class="col-bar-fill" style="background: linear-gradient(180deg, #60a5fa, #60a5fa88);" data-h="28.0%">
+              <span id="bar-val-0" class="bar-val-badge">$28M</span>
+            </div>
+          </div>
+          <div class="col-label">Q1 2025</div>
+        </div>
+
+        <div class="chart-col">
+          <div class="col-bar-track">
+            <div id="bar-fill-1" class="col-bar-fill" style="background: linear-gradient(180deg, #38bdf8, #38bdf888);" data-h="45.0%">
+              <span id="bar-val-1" class="bar-val-badge">$45M</span>
+            </div>
+          </div>
+          <div class="col-label">Q2 2025</div>
+        </div>
+
+        <div class="chart-col">
+          <div class="col-bar-track">
+            <div id="bar-fill-2" class="col-bar-fill" style="background: linear-gradient(180deg, #818cf8, #818cf888);" data-h="68.0%">
+              <span id="bar-val-2" class="bar-val-badge">$68M</span>
+            </div>
+          </div>
+          <div class="col-label">Q3 2025</div>
+        </div>
+
+        <div class="chart-col">
+          <div class="col-bar-track">
+            <div id="bar-fill-3" class="col-bar-fill" style="background: linear-gradient(180deg, #34d399, #34d39988);" data-h="94.0%">
+              <span id="bar-val-3" class="bar-val-badge">$94M</span>
+            </div>
+          </div>
+          <div class="col-label">Q4 2025</div>
+        </div>
+
+      </div>
+    </div>
+
+    
+    
+  </div>
+
+  <script>
+    // HyperFrames deterministic timeline
+    const tl = gsap.timeline({ paused: true });
+    
+    // Animate composition
+    
+    // Chart container fade & rise
+    tl.from('#revenue-chart', {
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      ease: 'power3.out'
+    }, 0.5);
+
+
+    // Bar #0 grow
+    tl.to('#bar-fill-0', {
+      height: '28.0%',
+      duration: 1.2,
+      ease: 'elastic.out(1, 0.75)'
+    }, 0.8);
+    
+    tl.to('#bar-val-0', {
+      opacity: 1,
+      y: -5,
+      duration: 0.5,
+      ease: 'power2.out'
+    }, 1.1);
+
+
+    // Bar #1 grow
+    tl.to('#bar-fill-1', {
+      height: '45.0%',
+      duration: 1.2,
+      ease: 'elastic.out(1, 0.75)'
+    }, 0.95);
+    
+    tl.to('#bar-val-1', {
+      opacity: 1,
+      y: -5,
+      duration: 0.5,
+      ease: 'power2.out'
+    }, 1.25);
+
+
+    // Bar #2 grow
+    tl.to('#bar-fill-2', {
+      height: '68.0%',
+      duration: 1.2,
+      ease: 'elastic.out(1, 0.75)'
+    }, 1.1);
+    
+    tl.to('#bar-val-2', {
+      opacity: 1,
+      y: -5,
+      duration: 0.5,
+      ease: 'power2.out'
+    }, 1.4);
+
+
+    // Bar #3 grow
+    tl.to('#bar-fill-3', {
+      height: '94.0%',
+      duration: 1.2,
+      ease: 'elastic.out(1, 0.75)'
+    }, 1.25);
+    
+    tl.to('#bar-val-3', {
+      opacity: 1,
+      y: -5,
+      duration: 0.5,
+      ease: 'power2.out'
+    }, 1.55);
+
+    
+    // Register timeline with HyperFrames renderer hook
+    window.__timelines = window.__timelines || {};
+    window.__timelines['chart_demo'] = tl;
+    window.__hyperframes_ready = true;
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "historyId": "74501997-19c5-449e-9e94-4b441619a74e",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "hyperframes.json": {
+      "hash": "c017876125c3671e2f743c6b66b73c75a93666ec2c963db5d61ad3aabf4b2588",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/74501997-19c5-449e-9e94-4b441619a74e/blobs/c0/c017876125c3671e2f743c6b66b73c75a93666ec2c963db5d61ad3aabf4b2588"
+    },
+    "index.html": {
+      "hash": "52e0feea0e530458b6e454fd9621a229f46aef5b1616552cdb4771aeea5229a5",
+      "content": "/Users/meerthikasr/.cache/hyperframes/history/74501997-19c5-449e-9e94-4b441619a74e/blobs/52/52e0feea0e530458b6e454fd9621a229f46aef5b1616552cdb4771aeea5229a5"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "0be16ff6-ac70-4b36-8f02-ade170ab7f68",
+      "completedAt": 1793594509588,
+      "output": "/Users/meerthikasr/Desktop/hyper-frame/renders/09_product_launch.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}
